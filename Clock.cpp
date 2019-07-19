@@ -159,11 +159,20 @@ void Clock::Reset() {
 
 Time Clock::CurrentTime() {
 
+	char s[80];
 	time_t t = time(0);
-	string full_time = ctime(&t);
-	char day[20], month[20];
-	int hrs = 0, minutes = 0, seconds = 0, day_n = 0, year = 0;
-	sscanf(full_time.c_str(), "%s%s%d%d:%d:%d%d", day, month, &day_n, &hrs, &minutes, &seconds, &year);
+	strftime(s, 80, "%H:%M", localtime(&t));
+	int hrs = -1, minutes = -1;
+	sscanf(s, "%d:%d", &hrs, &minutes);
 	return Time(hrs, minutes);
+}
+
+string Clock::CurrentTime(int ignore_this) {
+
+	char s[80];
+	time_t t = time(0);
+	strftime(s, 80, "%Y/%m/%d/%H/%M/%S", localtime(&t));	//year/month/day/hour/minute/sec
+	cout << s << endl;
+	return string(s);
 }
 

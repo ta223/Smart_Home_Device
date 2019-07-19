@@ -28,7 +28,7 @@ void Light::CommandLine() {
 
 		cout << " _________________ " << endl;
 		cout << "|                 |" << endl;
-		cout << "| LIGHTS CONTROLS |" << endl;
+		cout << "| LIGHT CONTROLS  |" << endl;
 		cout << "|_________________|" << endl;
 
 		cout << "\n\n\n";
@@ -55,7 +55,6 @@ void Light::CommandLine() {
 			goto END;
 		
 		}
-
 
 		if (command == "RETURN_AUTO_ON") {
 

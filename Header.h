@@ -2,6 +2,8 @@
 #include <string>
 #include <forward_list> 
 #include <ctime>
+#include <vector>
+#include <set>
 
 #ifdef _WIN32
 	#include <windows.h>
@@ -56,7 +58,10 @@ class Clock : public SmartHomeDevice{
 public:
 	Clock();
 	void CommandLine();
-	static Time CurrentTime();
+	static Time CurrentTime();	
+
+	//the parameter is just there to allow overloading
+	static std::string CurrentTime(int);	// returns current with format yyyy/mm/dd/hrs/min/sec
 
 private:
 	std::string current_time;	//current date and time
@@ -85,4 +90,38 @@ private:
 	void Set_AUTO_OFF(unsigned int hrs, unsigned int minutes);
 	bool IsOn() const;
 	void Reset();
+};
+
+
+enum list_number {LIST_ONE = 1, LIST_TWO = 2};
+
+class Organizer : public SmartHomeDevice {
+
+public:
+	void CommandLine();
+	void Reset();
+
+private:
+
+	struct List {
+
+		List(std::string list_of_items);
+		bool operator > (const List &other_list);
+
+		mutable uint8_t list_num;
+		std::vector<std::string> items;
+		int day, month, year;
+		int hrs, minutes, seconds;
+
+	};
+
+	struct CompareList {
+		bool operator() (const List &lhs, List &rhs);
+	};
+
+	std::multiset<List, CompareList> storing_lists;	//with multisets the lists are ordered with respect to their date of creation
+
+	void AddList(std::string list_of_items);
+	void DeleteList(enum list_number list_num);
+
 };
