@@ -4,6 +4,12 @@
 #include <sstream>
 #include <algorithm>
 
+#define PRINT_INITIAL_MSG	cout << " ________________ " << endl;\
+							cout << "|                |" << endl;\
+							cout << "| CLOCK CONTROLS |" << endl;\
+							cout << "|________________|" << endl;\
+							cout << "\n\n\n"
+
 using namespace std;
 
 Time::Time(unsigned int _hrs_, unsigned int _minutes_) : hrs(_hrs_), minutes(_minutes_) {
@@ -111,6 +117,7 @@ void Clock::Timer(const double target_time){
 void Clock::CommandLine() {
 
 	CLEAR_CONSOLE;
+	msg_poll.Clear();
 
 	while (1) {
 
@@ -118,7 +125,6 @@ void Clock::CommandLine() {
 		cout << "|                |" << endl;
 		cout << "| CLOCK CONTROLS |" << endl;
 		cout << "|________________|" << endl;
-
 		cout << "\n\n\n";
 
 		msg_poll.DisplayMessages();
@@ -144,6 +150,8 @@ void Clock::CommandLine() {
 		
 		if (sscanf(command.c_str(), "STOPW_%d", &target_time) != EOF && target_time != -1) {
 
+			CLEAR_CONSOLE;
+			PRINT_INITIAL_MSG;
 			msg_poll.Clear();
 			Timer(target_time);
 			AppendTimerList(target_time);
@@ -153,7 +161,7 @@ void Clock::CommandLine() {
 
 		if (command == "LASTSTOPWTIMERS") { msg_poll.NewMessage("Last timers:"); TraverseList(); goto END; }
 
-		if (command == "MAIN_MENU") { SmartHomeDevice::pointer = derived_classes[0]; break; }
+		if (command == "MAIN_MENU") break; 
 
 		END: {
 			CLEAR_CONSOLE;

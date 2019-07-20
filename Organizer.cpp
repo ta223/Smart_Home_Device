@@ -244,6 +244,7 @@ bool Organizer::AddList(vector<string> &item_list) {
 void Organizer::CommandLine() {
 
 	CLEAR_CONSOLE;
+	msg_poll.Clear();
 
 	while (1) {
 
@@ -282,7 +283,7 @@ void Organizer::CommandLine() {
 			DeleteList(list_num); goto END;
 		}
 
-		if (command == "MAIN_MENU") { SmartHomeDevice::pointer = derived_classes[0]; break; }
+		if (command == "MAIN_MENU") break; 
 		
 		END: {
 			CLEAR_CONSOLE;

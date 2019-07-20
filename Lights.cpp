@@ -27,6 +27,7 @@ bool Light::IsOn() const{
 void Light::CommandLine() {
 
 	CLEAR_CONSOLE;
+	msg_poll.Clear();
 
 	while (1) {
 
@@ -105,7 +106,7 @@ void Light::CommandLine() {
 
 		}
 
-		if (command == "MAIN_MENU") { SmartHomeDevice::pointer = derived_classes[0]; break; }
+		if (command == "MAIN_MENU") break; 
 
 		END: {
 			CLEAR_CONSOLE;

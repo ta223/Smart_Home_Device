@@ -42,20 +42,24 @@ void SmartHomeDevice::CommandLine() {
 	msg_poll.DisplayMessages();
 
 	cout << "cmd:";
-	string command;
+	string command; command.clear();
 	cin >> command;
 	cin.ignore();
 	cout << endl;
 
 	MessagePoll::UpperCase(command);
 
-	if (command == "CLOCK") { pointer = derived_classes[1]; goto END; }
+	if (command == "CLOCK") { pointer = derived_classes[1]; msg_poll.Clear(); goto END; }
 
-	if (command == "ORGANIZER") { pointer = derived_classes[2]; goto END; }
+	if (command == "ORGANIZER") { pointer = derived_classes[2]; msg_poll.Clear(); goto END; }
 
-	if (command == "LIGHTS") { pointer = derived_classes[3]; goto END; }
+	if (command == "LIGHTS") { pointer = derived_classes[3]; msg_poll.Clear(); goto END; }
 
-	if (command == "RESET") pointer->Reset();
+	if (command == "RESET") {
+		for (int i = 0; i < 4; i++) derived_classes[i]->Reset();
+		msg_poll.NewMessage("Settings have been reset to default\n");
+		goto END;
+	}
 
 	if (command == "EXIT") return;
 
@@ -64,6 +68,8 @@ void SmartHomeDevice::CommandLine() {
 	}
 
 	 pointer->CommandLine();
+	 msg_poll.Clear();
+	 pointer = derived_classes[0];
 	 goto START;
 
 }
