@@ -19,7 +19,7 @@ void Light::Set_AUTO_OFF(unsigned int hrs, unsigned int minutes) {
 bool Light::IsOn() const{
 
 	Time current_time = Clock::CurrentTime();
-	if (current_time >= current_AUTO_ON) return true;
+	if (current_time >= current_AUTO_ON && current_time < current_AUTO_OFF) return true;
 	return false;
 
 }
@@ -101,8 +101,11 @@ void Light::CommandLine() {
 			ostringstream out;
 			out << "Current AUTO_OFF time changed to: " << temp << "\n";
 			msg_poll.NewMessage(out.str());
+			goto END;
 
 		}
+
+		if (command == "MAIN_MENU") { SmartHomeDevice::pointer = derived_classes[0]; break; }
 
 		END: {
 			CLEAR_CONSOLE;

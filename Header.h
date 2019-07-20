@@ -20,8 +20,8 @@
 class SmartHomeDevice {
 
 public:
-	virtual void CommandLine() = 0;
-	virtual void Reset() = 0;
+	virtual void CommandLine();
+	virtual void Reset();
 
 protected:
 	class MessagePoll {
@@ -40,6 +40,15 @@ protected:
 
 	}msg_poll;
 
+public:
+	SmartHomeDevice *pointer;	//this pointer will point to one of the elements of the array below
+	SmartHomeDevice *derived_classes[4];	/*these pointers point will point to these classes in the following order:
+											 - this class
+											 - class Clock
+											 - class Organizer
+											 - class Lights
+											*/
+
 };
 
 struct Time {
@@ -48,6 +57,7 @@ struct Time {
 	unsigned int hrs, minutes;
 	bool operator >= (const Time &other_obj) const;
 	bool operator <= (const Time &other_obj) const;
+	bool operator < (const Time &other_obj) const;
 	operator char*() const;
 	void show();
 

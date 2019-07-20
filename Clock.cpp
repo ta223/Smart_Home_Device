@@ -28,6 +28,14 @@ bool Time::operator <= (const Time &other_obj) const{
 
 }
 
+bool Time::operator < (const Time &other_obj) const {
+
+	if (this->hrs < other_obj.hrs)  return true;
+	if (this->hrs == other_obj.hrs && this->minutes < other_obj.minutes) return true;
+	return false;
+
+}
+
 Time::operator char*() const {
 
 	char *str = new char[10];
@@ -60,7 +68,7 @@ void Clock::TraverseList() {
 	unsigned int counter = 0;
 	ostringstream out;
 
-	for (itr = timer_list.begin(); counter < list_size - 1 || itr != timer_list.end(); ++itr, ++counter) {
+	for (itr = timer_list.begin(); counter < list_size - 1; ++itr, ++counter) {
 
 		out.str(""); out.clear();
 		out << *itr << "s, ";
@@ -71,7 +79,7 @@ void Clock::TraverseList() {
 	if (itr != timer_list.end()) {
 
 		out.str(""); out.clear();
-		out << *itr;
+		out << *itr << "s\n";
 		msg_poll.AppendMessage(out.str());
 
 	}
@@ -134,7 +142,7 @@ void Clock::CommandLine() {
 		}
 
 		
-		if (sscanf(command.c_str(), "STOP_W_%d", &target_time) != EOF && target_time != -1) {
+		if (sscanf(command.c_str(), "STOPW_%d", &target_time) != EOF && target_time != -1) {
 
 			msg_poll.Clear();
 			Timer(target_time);
@@ -143,7 +151,9 @@ void Clock::CommandLine() {
 
 		}
 
-		if (command == "LASTOPWTIMERS") {msg_poll.NewMessage("Last timers:"); TraverseList();}
+		if (command == "LASTSTOPWTIMERS") { msg_poll.NewMessage("Last timers:"); TraverseList(); goto END; }
+
+		if (command == "MAIN_MENU") { SmartHomeDevice::pointer = derived_classes[0]; break; }
 
 		END: {
 			CLEAR_CONSOLE;

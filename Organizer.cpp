@@ -278,8 +278,11 @@ void Organizer::CommandLine() {
 
 		if (command == "RETURNLISTS") { msg_poll.Clear(); ShowAllLists(); goto END; }
 
-		if (sscanf(command.c_str(), "DELETE_LIST_%d\n", &list_num) != EOF && list_num != -1) 
-			DeleteList(list_num);
+		if (sscanf(command.c_str(), "DELETE_LIST_%d\n", &list_num) != EOF && list_num != -1) {
+			DeleteList(list_num); goto END;
+		}
+
+		if (command == "MAIN_MENU") { SmartHomeDevice::pointer = derived_classes[0]; break; }
 		
 		END: {
 			CLEAR_CONSOLE;

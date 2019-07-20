@@ -1,9 +1,5 @@
 #include "Header.h"
-#include <string>
 #include <iostream>
-#include <ctime>
-#include <set>
-#include <iterator>
 
 using namespace std;
 
@@ -27,11 +23,70 @@ void SmartHomeDevice::MessagePoll::UpperCase(std::string &str) {
 
 }
 
+/*if SmartHomeDevice::pointer == this then this becomes a recursive function*/
+void SmartHomeDevice::CommandLine() {
+
+	START: {
+		CLEAR_CONSOLE;
+	}
+
+	cout << "		____________________________" << endl;
+	cout << "		||                        ||" << endl;
+	cout << "		|| SMART HOME CONTROLLER  ||" << endl;
+	cout << "		||       MAIN MENU        ||" << endl;
+	cout << "		||________________________||" << endl;
+	cout << "\n\n\n";
+
+	cout << "Type CLOCK, ORGANIZER, LIGHTS, RESET to access the respective controls\n\n";
+
+	msg_poll.DisplayMessages();
+
+	cout << "cmd:";
+	string command;
+	cin >> command;
+	cin.ignore();
+	cout << endl;
+
+	MessagePoll::UpperCase(command);
+
+	if (command == "CLOCK") { pointer = derived_classes[1]; goto END; }
+
+	if (command == "ORGANIZER") { pointer = derived_classes[2]; goto END; }
+
+	if (command == "LIGHTS") { pointer = derived_classes[3]; goto END; }
+
+	if (command == "RESET") pointer->Reset();
+
+	if (command == "EXIT") return;
+
+	END: {
+		CLEAR_CONSOLE;
+	}
+
+	 pointer->CommandLine();
+	 goto START;
+
+}
+
+void SmartHomeDevice::Reset() {
+	/*nothing to see here*/
+}
+
 
 int main() {
 
-	Organizer org;
-	org.CommandLine();
+	SmartHomeDevice smart_home_device;
+	smart_home_device.pointer = &smart_home_device;
+
+	smart_home_device.derived_classes[0] = &smart_home_device;
+	smart_home_device.derived_classes[1] = new Clock;
+	smart_home_device.derived_classes[2] = new Organizer;
+	smart_home_device.derived_classes[3] = new Light;
+	smart_home_device.CommandLine();
+
+	delete smart_home_device.derived_classes[1];
+	delete smart_home_device.derived_classes[2];
+	delete smart_home_device.derived_classes[3];
 
 	return 0;
 }
