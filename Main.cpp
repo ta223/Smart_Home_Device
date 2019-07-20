@@ -2,6 +2,8 @@
 #include <string>
 #include <iostream>
 #include <ctime>
+#include <set>
+#include <iterator>
 
 using namespace std;
 
@@ -25,35 +27,11 @@ void SmartHomeDevice::MessagePoll::UpperCase(std::string &str) {
 
 }
 
-void foo(string list_of_items) {
-
-	string itr_str;
-	string::iterator itr;
-
-	vector<string> items;
-
-	for (itr = list_of_items.begin(); itr != list_of_items.end(); ++itr) {
-
-		if (*itr != ',') if (*itr != ' ') itr_str += *itr;
-
-		else { items.push_back(itr_str); itr_str.clear(); }	//add the item and proceed to build the next string
-
-	}
-
-	int size = (int)items.size();
-	for (int i = 0; i < size; i++)
-		cout << items[i].c_str() << endl;
-
-}
 
 int main() {
 
-	//class Clock clock;
-	//clock.CommandLine();
-	foo("Jesus, Moses, Noah, Jacob, Joseph");
-
-	Light light;
-	light.CommandLine();
+	Organizer org;
+	org.CommandLine();
 
 	return 0;
 }

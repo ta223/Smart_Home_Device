@@ -92,9 +92,6 @@ private:
 	void Reset();
 };
 
-
-enum list_number {LIST_ONE = 1, LIST_TWO = 2};
-
 class Organizer : public SmartHomeDevice {
 
 public:
@@ -105,23 +102,30 @@ private:
 
 	struct List {
 
-		List(std::string list_of_items);
-		bool operator > (const List &other_list);
-
-		mutable uint8_t list_num;
+		List(std::vector<std::string> &list_of_items);
+		bool operator > (const List &other_list) const;
+		bool operator < (const List &other_list) const;
+		mutable int list_num;
 		std::vector<std::string> items;
+
+		/*these are used for operator overloading*/
 		int day, month, year;
 		int hrs, minutes, seconds;
+
+		/*this is used to print on screen in a different format*/
+		std::string date_of_creation;
+
+		void show(MessagePoll &msg_poll, bool append_msg) const;
 
 	};
 
 	struct CompareList {
-		bool operator() (const List &lhs, List &rhs);
+		bool operator() (List lhs, List rhs) const;
 	};
 
 	std::multiset<List, CompareList> storing_lists;	//with multisets the lists are ordered with respect to their date of creation
-
-	void AddList(std::string list_of_items);
-	void DeleteList(enum list_number list_num);
+	bool AddList(std::vector<std::string> &item_list);
+	void DeleteList(int list_num);
+	void ShowAllLists();
 
 };

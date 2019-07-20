@@ -20,9 +20,13 @@ bool Light::IsOn() const{
 
 	Time current_time = Clock::CurrentTime();
 	if (current_time >= current_AUTO_ON) return true;
+	return false;
+
 }
 
 void Light::CommandLine() {
+
+	CLEAR_CONSOLE;
 
 	while (1) {
 

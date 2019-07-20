@@ -102,6 +102,8 @@ void Clock::Timer(const double target_time){
 
 void Clock::CommandLine() {
 
+	CLEAR_CONSOLE;
+
 	while (1) {
 
 		cout << " ________________ " << endl;
@@ -172,7 +174,6 @@ string Clock::CurrentTime(int ignore_this) {
 	char s[80];
 	time_t t = time(0);
 	strftime(s, 80, "%Y/%m/%d/%H/%M/%S", localtime(&t));	//year/month/day/hour/minute/sec
-	cout << s << endl;
 	return string(s);
 }
 
